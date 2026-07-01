@@ -10,9 +10,16 @@ class EbayService:
 
         return [
             CompetitorProduct(
-                title=f"eBay result for {search_term}",
+                title=f"Original Ersatzteil {search_term}",
                 price=19.99,
                 seller="ExampleSeller",
+                source="eBay",
+                link="https://www.ebay.de/"
+            ),
+            CompetitorProduct(
+                title="Universal Luftfilter",
+                price=15.90,
+                seller="CheapParts",
                 source="eBay",
                 link="https://www.ebay.de/"
             )
