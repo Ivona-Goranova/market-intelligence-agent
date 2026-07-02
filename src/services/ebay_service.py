@@ -14,6 +14,25 @@ class EbayService:
         encoded_search_term = quote_plus(search_term)
         return f"https://www.ebay.de/sch/i.html?_nkw={encoded_search_term}"
 
+    def map_api_item_to_competitor_product(self, item: dict) -> CompetitorProduct:
+        price_value = item.get("price", {}).get("value", 0)
+        title = item.get("title", "")
+        seller = item.get("seller", {}).get("username", "")
+        link = item.get("itemWebUrl", "")
+        image_url = item.get("image", {}).get("imageUrl", "")
+
+        return CompetitorProduct(
+            title=title,
+            price=float(price_value),
+            shipping_price=0.0,
+            sold_quantity=0,
+            rating=0.0,
+            seller=seller,
+            source="eBay",
+            link=link,
+            image_url=image_url,
+        )
+
     def search_product(self, product: Product) -> list[CompetitorProduct]:
         search_term = product.mpn or product.name
         search_url = self.build_search_url(product)
@@ -21,28 +40,40 @@ class EbayService:
         print(f"🔎 Searching eBay for: {search_term}")
         print(f"🌐 Search URL: {search_url}")
 
-        # API token will be used here later
-        # access_token = self.auth_service.get_access_token()
+        dummy_api_response = {
+            "itemSummaries": [
+                {
+                    "title": f"Original Ersatzteil {search_term}",
+                    "price": {
+                        "value": "19.99",
+                        "currency": "EUR"
+                    },
+                    "seller": {
+                        "username": "ExampleSeller"
+                    },
+                    "itemWebUrl": search_url,
+                    "image": {
+                        "imageUrl": ""
+                    }
+                },
+                {
+                    "title": "Universal Luftfilter",
+                    "price": {
+                        "value": "15.90",
+                        "currency": "EUR"
+                    },
+                    "seller": {
+                        "username": "CheapParts"
+                    },
+                    "itemWebUrl": search_url,
+                    "image": {
+                        "imageUrl": ""
+                    }
+                }
+            ]
+        }
 
         return [
-            CompetitorProduct(
-                title=f"Original Ersatzteil {search_term}",
-                price=19.99,
-                shipping_price=4.99,
-                sold_quantity=10,
-                rating=4.5,
-                seller="ExampleSeller",
-                source="eBay",
-                link=search_url,
-            ),
-            CompetitorProduct(
-                title="Universal Luftfilter",
-                price=15.90,
-                shipping_price=3.99,
-                sold_quantity=5,
-                rating=4.0,
-                seller="CheapParts",
-                source="eBay",
-                link=search_url,
-            ),
+            self.map_api_item_to_competitor_product(item)
+            for item in dummy_api_response["itemSummaries"]
         ]
