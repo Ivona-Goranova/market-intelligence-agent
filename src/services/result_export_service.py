@@ -21,6 +21,9 @@ class ResultExportService:
             "Quelle",
             "Konkurrenzprodukt",
             "Konkurrenzpreis",
+            "Versand",
+            "Verkaufte Menge"
+            "Bewertung",
             "Verkäufer",
             "Link"
         ])
@@ -32,10 +35,11 @@ class ResultExportService:
                 product.ma_price,
                 competitor.source,
                 competitor.title,
-                competitor.price,
+                competitor.shipping_price,
+                competitor.sold_quantity,
+                competitor.rating,
                 competitor.seller,
                 competitor.link
             ])
 
         workbook.save(file_path)
-        

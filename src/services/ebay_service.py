@@ -21,6 +21,9 @@ class EbayService:
             CompetitorProduct(
                 title=f"Original Ersatzteil {search_term}",
                 price=19.99,
+                shipping_price=4.99,
+                sold_quantity=10,
+                rating=4.5,
                 seller="ExampleSeller",
                 source="eBay",
                 link=search_url
@@ -28,6 +31,9 @@ class EbayService:
             CompetitorProduct(
                 title="Universal Luftfilter",
                 price=15.90,
+                shipping_price=3.99,
+                sold_quantity=5,
+                rating=4.0,
                 seller="CheapParts",
                 source="eBay",
                 link=search_url
